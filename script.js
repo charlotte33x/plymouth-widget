@@ -1,26 +1,18 @@
-body {
-    background-color: #FFE2ED;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 15px;
+async function loadWeather() {
+
+    const response = await fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=50.3755&longitude=-4.1427&current=temperature_2m&daily=temperature_2m_max&forecast_days=3"
+    );
+
+    const data = await response.json();
+
+    document.getElementById("temperature").innerHTML =
+        `Air: ${data.current.temperature_2m}°C`;
+
+    document.getElementById("forecast").innerHTML =
+        `${data.daily.temperature_2m_max[0]}° |
+         ${data.daily.temperature_2m_max[1]}° |
+         ${data.daily.temperature_2m_max[2]}°`;
 }
 
-h1 {
-    color: #d63384;
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-.section {
-    background: rgba(255,255,255,0.4);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    backdrop-filter: blur(10px);
-}
-
-.section-title {
-    color: #e754a6;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
+loadWeather();
