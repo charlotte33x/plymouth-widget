@@ -1,3 +1,33 @@
+function getMoonPhase() {
+    const today = new Date();
+
+    const knownNewMoon = new Date("2024-01-11");
+    const lunarCycle = 29.53;
+
+    const daysSince =
+        (today - knownNewMoon) / (1000 * 60 * 60 * 24);
+
+    const phase = daysSince % lunarCycle;
+
+    let phaseName = "";
+
+    if (phase < 1) {
+        phaseName = "🌑 New Moon";
+    } else if (phase < 7) {
+        phaseName = "🌒 Waxing Crescent";
+    } else if (phase < 15) {
+        phaseName = "🌔 Waxing Gibbous";
+    } else if (phase < 16) {
+        phaseName = "🌕 Full Moon";
+    } else if (phase < 22) {
+        phaseName = "🌖 Waning Gibbous";
+    } else {
+        phaseName = "🌘 Waning Crescent";
+    }
+
+    document.getElementById("moon").innerHTML = phaseName;
+}
+
 async function loadWeather() {
 
     const response = await fetch(
@@ -13,18 +43,13 @@ async function loadWeather() {
 
     document.getElementById("forecast").innerHTML =
         `
-        <b>${new Date(days[0]).toLocaleDateString('en-GB',{weekday:'short'})}</b> ${Math.round(data.daily.temperature_2m_max[0])}°
+        <b>${new Date(days[0]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[0])}°
         &nbsp;|&nbsp;
-        <b>${new Date(days[1]).toLocaleDateString('en-GB',{weekday:'short'})}</b> ${Math.round(data.daily.temperature_2m_max[1])}°
+        <b>${new Date(days[1]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[1])}°
         &nbsp;|&nbsp;
-        <b>${new Date(days[2]).toLocaleDateString('en-GB',{weekday:'short'})}</b> ${Math.round(data.daily.temperature_2m_max[2])}°
+        <b>${new Date(days[2]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[2])}°
         `;
 }
 
 loadWeather();
-function getMoonPhase() {
-    const today = new Date();
-
-    const knownNewMoon = new Date("2024-01-11");
-    const lunarCycle = 29.53;
-
+getMoonPhase();
