@@ -78,7 +78,7 @@ const tideData = await tideResponse.json();
 
 document.getElementById("temperature").innerHTML =
     `
-    Air: ${data.current.temperature_2m}°C<br>
+    Air: ${data.current.temperature_2m}°C
     Sea: ${tideData.seaTemperature.toFixed(1)}°C
     `;
 
