@@ -62,9 +62,9 @@ else {
         Age: ${age.toFixed(1)} days<br>
         Illumination: ${Math.round(illumination)}%<br>
         🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days
+        State: ${tideState}
         `;
 }
-State: ${tideState}
 async function loadWeather() {
 
     const response = await fetch(
