@@ -10,6 +10,23 @@ function getMoonPhase() {
         (today - knownNewMoon) / (1000 * 60 * 60 * 24);
 
     const age = daysSince % lunarCycle;
+    let tideState = "";
+
+if (age < 4 || age > 25) {
+    tideState = "Spring Tide";
+}
+else if (age > 11 && age < 18) {
+    tideState = "Spring Tide";
+}
+else if (age > 5 && age < 10) {
+    tideState = "Neap Tide";
+}
+else if (age > 19 && age < 24) {
+    tideState = "Neap Tide";
+}
+else {
+    tideState = "Transitional";
+}
 
     let phaseName = "";
 
@@ -47,7 +64,7 @@ function getMoonPhase() {
         🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days
         `;
 }
-
+State: ${tideState}
 async function loadWeather() {
 
     const response = await fetch(
