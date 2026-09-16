@@ -50,6 +50,12 @@ async function loadWeather() {
         <b>${new Date(days[2]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[2])}°
         `;
 }
+const now = new Date();
 
+document.getElementById("updated").innerHTML =
+    `Updated ${now.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit'
+    })}`;
 loadWeather();
 getMoonPhase();
