@@ -22,3 +22,9 @@ async function loadWeather() {
 }
 
 loadWeather();
+function getMoonPhase() {
+    const today = new Date();
+
+    const knownNewMoon = new Date("2024-01-11");
+    const lunarCycle = 29.53;
+
