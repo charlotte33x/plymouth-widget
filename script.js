@@ -1,31 +1,51 @@
 function getMoonPhase() {
+
     const today = new Date();
 
     const knownNewMoon = new Date("2024-01-11");
     const lunarCycle = 29.53;
+    const fullMoonAge = 14.77;
 
     const daysSince =
         (today - knownNewMoon) / (1000 * 60 * 60 * 24);
 
-    const phase = daysSince % lunarCycle;
+    const age = daysSince % lunarCycle;
 
     let phaseName = "";
 
-    if (phase < 1) {
+    if (age < 1) {
         phaseName = "🌑 New Moon";
-    } else if (phase < 7) {
+    } else if (age < 7) {
         phaseName = "🌒 Waxing Crescent";
-    } else if (phase < 15) {
+    } else if (age < 15) {
         phaseName = "🌔 Waxing Gibbous";
-    } else if (phase < 16) {
+    } else if (age < 16) {
         phaseName = "🌕 Full Moon";
-    } else if (phase < 22) {
+    } else if (age < 22) {
         phaseName = "🌖 Waning Gibbous";
     } else {
         phaseName = "🌘 Waning Crescent";
     }
 
-    document.getElementById("moon").innerHTML = phaseName;
+    const illumination =
+        ((1 - Math.cos(2 * Math.PI * age / lunarCycle)) / 2) * 100;
+
+    let daysUntilFull;
+
+    if (age <= fullMoonAge) {
+        daysUntilFull = fullMoonAge - age;
+    } else {
+        daysUntilFull =
+            (lunarCycle - age + fullMoonAge);
+    }
+
+    document.getElementById("moon").innerHTML =
+        `
+        <b>Phase:</b> ${phaseName}<br>
+        <b>Age:</b> ${age.toFixed(1)} days<br>
+        <b>Illumination:</b> ${Math.round(illumination)}%<br>
+        <b>🌕 Next Full Moon:</b> ${daysUntilFull.toFixed(1)} days
+        `;
 }
 
 async function loadWeather() {
