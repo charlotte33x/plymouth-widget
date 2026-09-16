@@ -52,4 +52,4 @@ async function loadWeather() {
 }
 
 loadWeather();
-getMoonPhase();
+document.getElementById("moon").innerHTML = "🌕 Moon Works!";
