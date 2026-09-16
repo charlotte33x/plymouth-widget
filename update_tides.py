@@ -41,10 +41,22 @@ water_response = requests.get(
 )
 
 water_data = water_response.json()
+sea_response = requests.get(
+    "https://api.stormglass.io/v2/tide/sea-level/point",
+    headers=headers,
+    params={
+        "lat": LAT,
+        "lng": LNG,
+        "start": start.to("UTC").timestamp(),
+        "end": end.to("UTC").timestamp()
+    }
+)
 
+sea_data = sea_response.json()
 output = {
     "seaTemperature": water_data["hours"][0]["waterTemperature"]["sg"],
-    "tides": tides_data["data"]
+    "tides": tides_data["data"],
+    "seaLevel": sea_data["data"]
 }
 
 with open("data/tides.json", "w") as f:
