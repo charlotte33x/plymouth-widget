@@ -11,11 +11,14 @@ LNG = -4.1427
 start = arrow.now().floor("day")
 end = arrow.now().shift(days=2).floor("day")
 
-response = requests.get(
+headers = {
+    "Authorization": API_KEY
+}
+
+# Tide extremes
+tides_response = requests.get(
     "https://api.stormglass.io/v2/tide/extremes/point",
-    headers={
-        "Authorization": API_KEY
-    },
+    headers=headers,
     params={
         "lat": LAT,
         "lng": LNG,
@@ -24,7 +27,25 @@ response = requests.get(
     }
 )
 
-data = response.json()
+tides_data = tides_response.json()
+
+# Water temperature
+water_response = requests.get(
+    "https://api.stormglass.io/v2/weather/point",
+    headers=headers,
+    params={
+        "lat": LAT,
+        "lng": LNG,
+        "params": "waterTemperature"
+    }
+)
+
+water_data = water_response.json()
+
+output = {
+    "seaTemperature": water_data["hours"][0]["waterTemperature"]["sg"],
+    "tides": tides_data["data"]
+}
 
 with open("data/tides.json", "w") as f:
-    json.dump(data, f, indent=2)
+    json.dump(output, f, indent=2)
