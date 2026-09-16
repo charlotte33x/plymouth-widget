@@ -77,5 +77,54 @@ document.getElementById("updated").innerHTML =
         hour: '2-digit',
         minute: '2-digit'
     })}`;
+async function loadTides() {
+
+    const response = await fetch("data/tides.json");
+    const tideData = await response.json();
+
+    const now = new Date();
+
+    const tides = tideData.data;
+
+    const nextTide = tides.find(
+        tide => new Date(tide.time) > now
+    );
+
+    const highTides = tides
+        .filter(tide => tide.type === "high")
+        .slice(0, 2);
+
+    const lowTides = tides
+        .filter(tide => tide.type === "low")
+        .slice(0, 2);
+
+    document.getElementById("tides").innerHTML =
+        `
+        Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit'
+        })}<br>
+
+        Height: ${nextTide.height.toFixed(2)}m<br><br>
+
+        Highs:
+        ${highTides.map(t =>
+            new Date(t.time).toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit'
+            })
+        ).join(" • ")}
+        <br>
+
+        Lows:
+        ${lowTides.map(t =>
+            new Date(t.time).toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit'
+            })
+        ).join(" • ")}
+        `;
+}
 loadWeather();
 getMoonPhase();
+loadTides();
