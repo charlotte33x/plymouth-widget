@@ -61,7 +61,7 @@ else {
         Phase: ${phaseName}<br>
         Age: ${age.toFixed(1)} days<br>
         Illumination: ${Math.round(illumination)}%<br>
-        🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days
+        🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days<br><br>
         State: ${tideState}
         `;
 }
@@ -106,6 +106,7 @@ async function loadTides() {
     const data = await response.json();
 
     const tides = data.tides;
+    const seaLevel = data.seaLevel;
 
     const now = new Date();
 
@@ -121,17 +122,53 @@ async function loadTides() {
         .filter(tide => tide.type === "low")
         .slice(0, 2);
 
+    const closestPoint = seaLevel.reduce((prev, curr) => {
+
+        const prevDiff =
+            Math.abs(new Date(prev.time) - now);
+
+        const currDiff =
+            Math.abs(new Date(curr.time) - now);
+
+        return currDiff < prevDiff ? curr : prev;
+
+    });
+
+    const currentIndex =
+        seaLevel.indexOf(closestPoint);
+
+    const currentHeight =
+        Number(closestPoint.sg);
+
+    let tideStatus = "🌊";
+
+    if (currentIndex > 0) {
+
+        const previousHeight =
+            Number(
+                seaLevel[currentIndex - 1].sg
+            );
+
+        tideStatus =
+            currentHeight > previousHeight
+                ? "⬆ Rising Tide"
+                : "⬇ Falling Tide";
+    }
+
     document.getElementById("tides").innerHTML =
         `
+        Current: ${currentHeight.toFixed(2)}m<br>
+        ${tideStatus}<br><br>
+
         Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString(
             "en-GB",
             {
                 hour: "2-digit",
                 minute: "2-digit"
             }
-        )}<br>
+        )} • ${nextTide.height.toFixed(2)}m
 
-        Height: ${nextTide.height.toFixed(2)}m<br><br>
+        <br><br>
 
         Highs:
         ${highTides.map(t =>
