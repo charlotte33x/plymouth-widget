@@ -61,7 +61,7 @@ else {
         Phase: ${phaseName}<br>
         Age: ${age.toFixed(1)} days<br>
         Illumination: ${Math.round(illumination)}%<br>
-        🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days<br><br>
+        🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days<br>
         State: ${tideState}
         `;
 }
@@ -158,7 +158,7 @@ async function loadTides() {
     document.getElementById("tides").innerHTML =
         `
         Current: ${currentHeight.toFixed(2)}m<br>
-        ${tideStatus}<br><br>
+        ${tideStatus}<br>
 
         Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString(
             "en-GB",
@@ -168,7 +168,7 @@ async function loadTides() {
             }
         )} • ${nextTide.height.toFixed(2)}m
 
-        <br><br>
+        <br>
 
         Highs:
         ${highTides.map(t =>
