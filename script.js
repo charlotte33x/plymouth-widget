@@ -41,10 +41,10 @@ function getMoonPhase() {
 
     document.getElementById("moon").innerHTML =
         `
-        <b>Phase:</b> ${phaseName}<br>
-        <b>Age:</b> ${age.toFixed(1)} days<br>
-        <b>Illumination:</b> ${Math.round(illumination)}%<br>
-        <b>🌕 Next Full Moon:</b> ${daysUntilFull.toFixed(1)} days
+        Phase: ${phaseName}<br>
+        Age: ${age.toFixed(1)} days<br>
+        Illumination: ${Math.round(illumination)}%<br>
+        🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days
         `;
 }
 
@@ -63,11 +63,11 @@ async function loadWeather() {
 
     document.getElementById("forecast").innerHTML =
         `
-        <b>${new Date(days[0]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[0])}°
+        ${new Date(days[0]).toLocaleDateString('en-GB', { weekday: 'short' })} ${Math.round(data.daily.temperature_2m_max[0])}°
         &nbsp;|&nbsp;
-        <b>${new Date(days[1]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[1])}°
+        ${new Date(days[1]).toLocaleDateString('en-GB', { weekday: 'short' })} ${Math.round(data.daily.temperature_2m_max[1])}°
         &nbsp;|&nbsp;
-        <b>${new Date(days[2]).toLocaleDateString('en-GB', { weekday: 'short' })}</b> ${Math.round(data.daily.temperature_2m_max[2])}°
+        ${new Date(days[2]).toLocaleDateString('en-GB', { weekday: 'short' })} ${Math.round(data.daily.temperature_2m_max[2])}°
         `;
 }
 const now = new Date();
