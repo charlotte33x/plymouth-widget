@@ -56,8 +56,14 @@ async function loadWeather() {
 
     const data = await response.json();
 
-    document.getElementById("temperature").innerHTML =
-        `Air: ${data.current.temperature_2m}°C`;
+   const tideResponse = await fetch("data/tides.json");
+const tideData = await tideResponse.json();
+
+document.getElementById("temperature").innerHTML =
+    `
+    Air: ${data.current.temperature_2m}°C<br>
+    Sea: ${tideData.seaTemperature.toFixed(1)}°C
+    `;
 
     const days = data.daily.time;
 
@@ -80,11 +86,11 @@ document.getElementById("updated").innerHTML =
 async function loadTides() {
 
     const response = await fetch("data/tides.json");
-    const tideData = await response.json();
+    const data = await response.json();
+
+    const tides = data.tides;
 
     const now = new Date();
-
-    const tides = tideData.data;
 
     const nextTide = tides.find(
         tide => new Date(tide.time) > now
@@ -100,28 +106,38 @@ async function loadTides() {
 
     document.getElementById("tides").innerHTML =
         `
-        Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit'
-        })}<br>
+        Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString(
+            "en-GB",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        )}<br>
 
         Height: ${nextTide.height.toFixed(2)}m<br><br>
 
         Highs:
         ${highTides.map(t =>
-            new Date(t.time).toLocaleTimeString('en-GB', {
-                hour: '2-digit',
-                minute: '2-digit'
-            })
+            new Date(t.time).toLocaleTimeString(
+                "en-GB",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            )
         ).join(" • ")}
+
         <br>
 
         Lows:
         ${lowTides.map(t =>
-            new Date(t.time).toLocaleTimeString('en-GB', {
-                hour: '2-digit',
-                minute: '2-digit'
-            })
+            new Date(t.time).toLocaleTimeString(
+                "en-GB",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            )
         ).join(" • ")}
         `;
 }
