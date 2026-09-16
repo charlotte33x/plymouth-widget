@@ -38,3 +38,8 @@ h1 {
 #moon {
     line-height: 1.8;
 }
+#updated {
+    color: #c65ca0;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
