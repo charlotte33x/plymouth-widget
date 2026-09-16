@@ -1,1 +1,26 @@
+body {
+    background-color: #FFE2ED;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 15px;
+}
 
+h1 {
+    color: #d63384;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.section {
+    background: rgba(255,255,255,0.4);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    color: #e754a6;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
