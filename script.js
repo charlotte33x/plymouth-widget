@@ -104,6 +104,9 @@ async function loadTides() {
 
     const response = await fetch("data/tides.json");
     const data = await response.json();
+    document.getElementById("temperature").innerHTML =
+    JSON.stringify(data.current);
+
 
     const tides = data.tides;
     const seaLevel = data.seaLevel;
