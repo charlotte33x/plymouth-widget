@@ -137,17 +137,19 @@ async function loadTides() {
     const currentIndex =
         seaLevel.indexOf(closestPoint);
 
-    const currentHeight =
-        Number(closestPoint.sg);
+ const DATUM_OFFSET = 3.36;
+
+const currentHeight =
+    Number(closestPoint.sg) + DATUM_OFFSET;
 
     let tideStatus = "🌊";
 
     if (currentIndex > 0) {
 
         const previousHeight =
-            Number(
-                seaLevel[currentIndex - 1].sg
-            );
+    Number(
+        seaLevel[currentIndex - 1].sg
+    ) + DATUM_OFFSET;
 
         tideStatus =
             currentHeight > previousHeight
@@ -157,7 +159,7 @@ async function loadTides() {
 
     document.getElementById("tides").innerHTML =
         `
-        Current: ${currentHeight.toFixed(2)}m<br>
+        Current: ${currentHeight.toFixed(1)}m<br>
         ${tideStatus}<br>
 
         Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString(
@@ -166,8 +168,7 @@ async function loadTides() {
                 hour: "2-digit",
                 minute: "2-digit"
             }
-        )} • ${nextTide.height.toFixed(2)}m
-
+          )} • ${(Number(nextTide.height) + DATUM_OFFSET).toFixed(1)}m
         <br>
 
         Highs:
