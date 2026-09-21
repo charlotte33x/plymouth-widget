@@ -172,7 +172,7 @@ async function loadTides() {
     document.getElementById("tides").innerHTML =
     `
     Current: ${currentHeight.toFixed(1)}m<br>
-    ${tideStatus}<br><br>
+    ${tideStatus}
 
     Next ${
         upcomingTide.EventType
@@ -187,8 +187,6 @@ async function loadTides() {
         }
     )}
     • ${Number(upcomingTide.Height).toFixed(1)}m
-    <br><br>
-
     Highs:
     ${highTides.map(t =>
         `${new Date(t.DateTime).toLocaleTimeString(
@@ -200,9 +198,6 @@ async function loadTides() {
             }
         )} • ${t.Height.toFixed(1)}m`
     ).join("<br>")}
-
-    <br><br>
-
     Lows:
     ${lowTides.map(t =>
         `${new Date(t.DateTime).toLocaleTimeString(
@@ -213,7 +208,7 @@ async function loadTides() {
                 minute: "2-digit"
             }
         )} • ${t.Height.toFixed(1)}m`
-    ).join("<br>")}
+    ).join}
     `;
 }   
 loadWeather();
