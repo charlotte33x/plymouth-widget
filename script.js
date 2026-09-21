@@ -61,7 +61,7 @@ else {
         Phase: ${phaseName}<br>
         Age: ${age.toFixed(1)} days<br>
         Illumination: ${Math.round(illumination)}%<br>
-        🌕 Next Full Moon: ${daysUntilFull.toFixed(1)} days<br>
+        Next Full Moon: ${daysUntilFull.toFixed(1)} days<br>
         State: ${tideState}
         `;
 }
