@@ -4,6 +4,8 @@ import os
 import arrow
 
 API_KEY = os.environ["STORMGLASS_API_KEY"]
+ADMIRALTY_KEY = os.environ["ADMIRALTY_API_KEY"]
+STATION_ID = "0014"
 
 LAT = 50.3755
 LNG = -4.1427
@@ -16,18 +18,18 @@ headers = {
 }
 
 # Tide extremes
-tides_response = requests.get(
-    "https://api.stormglass.io/v2/tide/extremes/point",
-    headers=headers,
+admiralty_response = requests.get(
+    f"https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/{STATION_ID}/TidalEvents",
     params={
-        "lat": LAT,
-        "lng": LNG,
-        "start": start.to("UTC").timestamp(),
-        "end": end.to("UTC").timestamp()
+        "duration": 7
+    },
+    headers={
+        "Ocp-Apim-Subscription-Key": ADMIRALTY_KEY
     }
 )
 
-tides_data = tides_response.json()
+tides_data = admiralty_response.json()
+`
 
 # Water temperature
 water_response = requests.get(
