@@ -29,7 +29,7 @@ admiralty_response = requests.get(
 )
 
 tides_data = admiralty_response.json()
-`
+
 
 # Water temperature
 water_response = requests.get(
@@ -57,7 +57,7 @@ sea_response = requests.get(
 sea_data = sea_response.json()
 output = {
     "seaTemperature": water_data["hours"][0]["waterTemperature"]["sg"],
-    "tides": tides_data["data"],
+    "tides": tides_data,
     "seaLevel": sea_data["data"]
 }
 
