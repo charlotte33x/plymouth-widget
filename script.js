@@ -184,7 +184,6 @@ Next ${
 }: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
     "en-GB",
     {
-        timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit"
     }
@@ -197,7 +196,6 @@ Next ${
            new Date(t.DateTime).toLocaleTimeString(
     "en-GB",
     {
-        timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit"
     }
@@ -211,7 +209,6 @@ Next ${
             new Date(t.DateTime).toLocaleTimeString(
     "en-GB",
     {
-        timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit"
     }
