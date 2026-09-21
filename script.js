@@ -169,8 +169,6 @@ async function loadTides() {
                 : "⬇ Falling Tide";
     }
 document.getElementById("tides").innerHTML =
-`TEST 123`;
-
 `Current: ${currentHeight.toFixed(1)}m<br>
 ${tideStatus}<br>
 Next ${
