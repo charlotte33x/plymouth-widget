@@ -118,16 +118,14 @@ async function loadTides() {
     );
 
     const highTides = tides
-        .filter(tide => tide.EventType
-tide.DateTime
-tide.Height === "high")
-        .slice(0, 2);
+    .filter(tide => tide.EventType === "HighWater")
+    .slice(0, 2);
+
 
     const lowTides = tides
-        .filter(tide => tide.EventType
-tide.DateTime
-tide.Height === "low")
-        .slice(0, 2);
+    .filter(tide => tide.EventType === "LowWater")
+    .slice(0, 2);
+
 
     const closestPoint = seaLevel.reduce((prev, curr) => {
 
@@ -169,20 +167,18 @@ const currentHeight =
         Current: ${currentHeight.toFixed(1)}m<br>
         ${tideStatus}<br>
 
-        Next ${nexttide.EventType
-tide.DateTime
-tide.Height}: ${new Date(nexttide.DateTime).toLocaleTimeString(
-            "en-GB",
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-          )} • ${(Number(nextTide.height)).toFixed(1)}m
-        <br>
+       Next ${nextTide.EventType}: ${new Date(nextTide.DateTime).toLocaleTimeString(
+    "en-GB",
+    {
+        hour: "2-digit",
+        minute: "2-digit"
+    }
+)} • ${Number(nextTide.Height).toFixed(1)}m
+<br>
 
         Highs:
         ${highTides.map(t =>
-            new Date(t.time).toLocaleTimeString(
+            new Date(t.DateTime).toLocaleTimeString(
                 "en-GB",
                 {
                     hour: "2-digit",
@@ -195,7 +191,7 @@ tide.Height}: ${new Date(nexttide.DateTime).toLocaleTimeString(
 
         Lows:
         ${lowTides.map(t =>
-            new Date(t.time).toLocaleTimeString(
+            new Date(t.DateTime).toLocaleTimeString(
                 "en-GB",
                 {
                     hour: "2-digit",
