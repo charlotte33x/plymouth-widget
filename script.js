@@ -104,107 +104,118 @@ async function loadTides() {
 
     const response = await fetch("data/tides.json");
     const data = await response.json();
-   
-
 
     const tides = data.tides;
-    console.log(tides);
-   const now = new Date();
+    const now = new Date();
 
-const upcomingTide = tides.find(
-    tide => new Date(tide.DateTime) > now
-);
+    const upcomingTide = tides.find(
+        tide => new Date(tide.DateTime) > now
+    );
 
-const highTides = tides
-    .filter(tide => tide.EventType === "HighWater")
-    .slice(0, 2);
+    const highTides = tides
+        .filter(tide => tide.EventType === "HighWater")
+        .slice(0, 2);
 
-const lowTides = tides
-    .filter(tide => tide.EventType === "LowWater")
-    .slice(0, 2);
+    const lowTides = tides
+        .filter(tide => tide.EventType === "LowWater")
+        .slice(0, 2);
 
-const sortedTides = tides
-    .map(t => ({
-        ...t,
-        time: new Date(t.DateTime)
-    }))
-    .sort((a, b) => a.time - b.time);
+    const sortedTides = tides
+        .map(t => ({
+            ...t,
+            time: new Date(t.DateTime)
+        }))
+        .sort((a, b) => a.time - b.time);
 
-let previousTide = null;
-let nextTide = null;
+    let previousTide = null;
+    let nextTide = null;
 
-for (let i = 0; i < sortedTides.length; i++) {
+    for (let i = 0; i < sortedTides.length; i++) {
 
-    if (sortedTides[i].time > now) {
-        nextTide = sortedTides[i];
-        previousTide = sortedTides[i - 1];
-        break;
+        if (sortedTides[i].time > now) {
+            nextTide = sortedTides[i];
+            previousTide = sortedTides[i - 1];
+            break;
+        }
     }
-}
 
-let currentHeight = 0;
-let tideStatus = "🌊";
+    let currentHeight = 0;
+    let tideStatus = "🌊";
 
-if (previousTide && nextTide) {
+    if (previousTide && nextTide) {
 
-    const totalTime =
-        nextTide.time - previousTide.time;
+        const totalTime =
+            nextTide.time - previousTide.time;
 
-    const elapsedTime =
-        now - previousTide.time;
+        const elapsedTime =
+            now - previousTide.time;
 
-    const fraction =
-        elapsedTime / totalTime;
+        const fraction =
+            elapsedTime / totalTime;
 
-   const cosineFraction =
-    (1 - Math.cos(Math.PI * fraction)) / 2;
+        const cosineFraction =
+            (1 - Math.cos(Math.PI * fraction)) / 2;
 
-currentHeight =
-    Number(previousTide.Height) +
-    (
-        Number(nextTide.Height)
-        - Number(previousTide.Height)
-    ) * cosineFraction;
+        currentHeight =
+            Number(previousTide.Height) +
+            (
+                Number(nextTide.Height)
+                - Number(previousTide.Height)
+            ) * cosineFraction;
 
-    tideStatus =
-    nextTide.EventType === "HighWater"
-        ? "⬆ Rising Tide"
-        : "⬇ Falling Tide";
-
-}
-    
-document.getElementById("tides").innerHTML =
-`
-Current: ${currentHeight.toFixed(1)}m<br>
-${tideStatus}<br>
-
-Next ${
-    upcomingTide.EventType
-        .replace("HighWater", "High Tide")
-        .replace("LowWater", "Low Tide")
-}: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
-    "en-GB",
-    {
-        hour: "2-digit",
-        minute: "2-digit"
+        tideStatus =
+            nextTide.EventType === "HighWater"
+                ? "⬆ Rising Tide"
+                : "⬇ Falling Tide";
     }
-)}
-• ${Number(upcomingTide.Height).toFixed(1)}m
-<br>
 
-Highs:
-${highTides.map(t =>
-    `${t.DateTime} • ${t.Height.toFixed(1)}m`
-).join("<br>")}
+    document.getElementById("tides").innerHTML =
+    `
+    Current: ${currentHeight.toFixed(1)}m<br>
+    ${tideStatus}<br><br>
 
-<br><br>
+    Next ${
+        upcomingTide.EventType
+            .replace("HighWater", "High Tide")
+            .replace("LowWater", "Low Tide")
+    }: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
+        "en-GB",
+        {
+            timeZone: "Europe/London",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    )}
+    • ${Number(upcomingTide.Height).toFixed(1)}m
+    <br><br>
 
-Lows:
-${lowTides.map(t =>
-    `${t.DateTime} • ${t.Height.toFixed(1)}m`
-).join("<br>")}
-`;
-}    
+    Highs:
+    ${highTides.map(t =>
+        `${new Date(t.DateTime).toLocaleTimeString(
+            "en-GB",
+            {
+                timeZone: "Europe/London",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        )} • ${t.Height.toFixed(1)}m`
+    ).join("<br>")}
+
+    <br><br>
+
+    Lows:
+    ${lowTides.map(t =>
+        `${new Date(t.DateTime).toLocaleTimeString(
+            "en-GB",
+            {
+                timeZone: "Europe/London",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        )} • ${t.Height.toFixed(1)}m`
+    ).join("<br>")}
+    `;
+}   
 loadWeather();
 getMoonPhase();
 loadTides();
