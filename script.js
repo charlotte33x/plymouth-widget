@@ -155,12 +155,15 @@ if (previousTide && nextTide) {
     const fraction =
         elapsedTime / totalTime;
 
-    currentHeight =
-        Number(previousTide.Height) +
-        (
-            Number(nextTide.Height)
-            - Number(previousTide.Height)
-        ) * fraction;
+   const cosineFraction =
+    (1 - Math.cos(Math.PI * fraction)) / 2;
+
+currentHeight =
+    Number(previousTide.Height) +
+    (
+        Number(nextTide.Height)
+        - Number(previousTide.Height)
+    ) * cosineFraction;
 
     tideStatus =
     nextTide.EventType === "HighWater"
@@ -172,26 +175,33 @@ if (previousTide && nextTide) {
 document.getElementById("tides").innerHTML =
         `
         Current: ${currentHeight.toFixed(1)}m<br>
-        ${tideStatus}<br>
+${tideStatus}<br>
 
-       Next ${upcomingTide.EventType}: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
+Next ${
+    upcomingTide.EventType
+        .replace("HighWater", "High Tide")
+        .replace("LowWater", "Low Tide")
+}: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
     "en-GB",
     {
+        timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit"
     }
-)} • ${Number(upcomingTide.Height).toFixed(1)}m
+)}
+• ${Number(upcomingTide.Height).toFixed(1)}m
 <br>
 
         Highs:
         ${highTides.map(t =>
-            new Date(t.DateTime).toLocaleTimeString(
-                "en-GB",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            )
+           new Date(t.DateTime).toLocaleTimeString(
+    "en-GB",
+    {
+        timeZone: "Europe/London",
+        hour: "2-digit",
+        minute: "2-digit"
+    }
+)
         ).join(" • ")}
 
         <br>
@@ -199,12 +209,13 @@ document.getElementById("tides").innerHTML =
         Lows:
         ${lowTides.map(t =>
             new Date(t.DateTime).toLocaleTimeString(
-                "en-GB",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            )
+    "en-GB",
+    {
+        timeZone: "Europe/London",
+        hour: "2-digit",
+        minute: "2-digit"
+    }
+)
         ).join(" • ")}
         `;
 }
