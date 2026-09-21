@@ -114,15 +114,19 @@ async function loadTides() {
     const now = new Date();
 
     const nextTide = tides.find(
-        tide => new Date(tide.time) > now
+        tide => new Date(tide.DateTime) > now
     );
 
     const highTides = tides
-        .filter(tide => tide.type === "high")
+        .filter(tide => tide.EventType
+tide.DateTime
+tide.Height === "high")
         .slice(0, 2);
 
     const lowTides = tides
-        .filter(tide => tide.type === "low")
+        .filter(tide => tide.EventType
+tide.DateTime
+tide.Height === "low")
         .slice(0, 2);
 
     const closestPoint = seaLevel.reduce((prev, curr) => {
@@ -140,10 +144,10 @@ async function loadTides() {
     const currentIndex =
         seaLevel.indexOf(closestPoint);
 
- const DATUM_OFFSET = 3.36;
+
 
 const currentHeight =
-    Number(closestPoint.sg) + DATUM_OFFSET;
+    Number(closestPoint.sg) ;
 
     let tideStatus = "🌊";
 
@@ -152,7 +156,7 @@ const currentHeight =
         const previousHeight =
     Number(
         seaLevel[currentIndex - 1].sg
-    ) + DATUM_OFFSET;
+    ) ;
 
         tideStatus =
             currentHeight > previousHeight
@@ -165,13 +169,15 @@ const currentHeight =
         Current: ${currentHeight.toFixed(1)}m<br>
         ${tideStatus}<br>
 
-        Next ${nextTide.type}: ${new Date(nextTide.time).toLocaleTimeString(
+        Next ${nexttide.EventType
+tide.DateTime
+tide.Height}: ${new Date(nexttide.DateTime).toLocaleTimeString(
             "en-GB",
             {
                 hour: "2-digit",
                 minute: "2-digit"
             }
-          )} • ${(Number(nextTide.height) + DATUM_OFFSET).toFixed(1)}m
+          )} • ${(Number(nextTide.height)).toFixed(1)}m
         <br>
 
         Highs:
