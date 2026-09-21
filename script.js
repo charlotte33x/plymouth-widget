@@ -168,48 +168,42 @@ async function loadTides() {
                 ? "⬆ Rising Tide"
                 : "⬇ Falling Tide";
     }
-
-    document.getElementById("tides").innerHTML =
-    `
-    Current: ${currentHeight.toFixed(1)}m<br>
-    ${tideStatus}
-
-    Next ${
-        upcomingTide.EventType
-            .replace("HighWater", "High Tide")
-            .replace("LowWater", "Low Tide")
-    }: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
+document.getElementById("tides").innerHTML =
+`Current: ${currentHeight.toFixed(1)}m<br>
+${tideStatus}<br>
+Next ${
+    upcomingTide.EventType
+        .replace("HighWater", "High Tide")
+        .replace("LowWater", "Low Tide")
+}: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
+    "en-GB",
+    {
+        timeZone: "Europe/London",
+        hour: "2-digit",
+        minute: "2-digit"
+    }
+)} • ${Number(upcomingTide.Height).toFixed(1)}m<br>
+Highs: ${highTides.map(t =>
+    `${new Date(t.DateTime).toLocaleTimeString(
         "en-GB",
         {
             timeZone: "Europe/London",
             hour: "2-digit",
             minute: "2-digit"
         }
-    )}
-    • ${Number(upcomingTide.Height).toFixed(1)}m
-    Highs:
-    ${highTides.map(t =>
-        `${new Date(t.DateTime).toLocaleTimeString(
-            "en-GB",
-            {
-                timeZone: "Europe/London",
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        )} • ${t.Height.toFixed(1)}m`
-    ).join("<br>")}
-    Lows:
-    ${lowTides.map(t =>
-        `${new Date(t.DateTime).toLocaleTimeString(
-            "en-GB",
-            {
-                timeZone: "Europe/London",
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        )} • ${t.Height.toFixed(1)}m`
-    ).join}
-    `;
+    )} • ${t.Height.toFixed(1)}m`
+).join(" | ")}<br>
+Lows: ${lowTides.map(t =>
+    `${new Date(t.DateTime).toLocaleTimeString(
+        "en-GB",
+        {
+            timeZone: "Europe/London",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    )} • ${t.Height.toFixed(1)}m`
+).join("<br>")}`;
+   
 }   
 loadWeather();
 getMoonPhase();
