@@ -174,8 +174,8 @@ currentHeight =
 }
     
 document.getElementById("tides").innerHTML =
-        `
-        Current: ${currentHeight.toFixed(1)}m<br>
+`
+Current: ${currentHeight.toFixed(1)}m<br>
 ${tideStatus}<br>
 
 Next ${
@@ -192,31 +192,19 @@ Next ${
 • ${Number(upcomingTide.Height).toFixed(1)}m
 <br>
 
-        Highs:
-        ${highTides.map(t =>
-           new Date(t.DateTime).toLocaleTimeString(
-    "en-GB",
-    {
-        hour: "2-digit",
-        minute: "2-digit"
-    }
-)
-        ).join(" • ")}
+Highs:
+${highTides.map(t =>
+    `${t.DateTime} • ${t.Height.toFixed(1)}m`
+).join("<br>")}
 
-        <br>
+<br><br>
 
-        Lows:
-        ${lowTides.map(t =>
-            new Date(t.DateTime).toLocaleTimeString(
-    "en-GB",
-    {
-        hour: "2-digit",
-        minute: "2-digit"
-    }
-)
-        ).join(" • ")}
-        `;
-}
+Lows:
+${lowTides.map(t =>
+    `${t.DateTime} • ${t.Height.toFixed(1)}m`
+).join("<br>")}
+`;
+}    
 loadWeather();
 getMoonPhase();
 loadTides();
