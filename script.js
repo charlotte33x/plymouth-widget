@@ -104,76 +104,83 @@ async function loadTides() {
 
     const response = await fetch("data/tides.json");
     const data = await response.json();
-    document.getElementById("temperature").innerHTML =
-    JSON.stringify(data.current);
+   
 
 
     const tides = data.tides;
-    const seaLevel = data.seaLevel;
+   const now = new Date();
 
-    const now = new Date();
+const upcomingTide = tides.find(
+    tide => new Date(tide.DateTime) > now
+);
 
-    const nextTide = tides.find(
-        tide => new Date(tide.DateTime) > now
-    );
-
-    const highTides = tides
+const highTides = tides
     .filter(tide => tide.EventType === "HighWater")
     .slice(0, 2);
 
-
-    const lowTides = tides
+const lowTides = tides
     .filter(tide => tide.EventType === "LowWater")
     .slice(0, 2);
 
+const sortedTides = tides
+    .map(t => ({
+        ...t,
+        time: new Date(t.DateTime)
+    }))
+    .sort((a, b) => a.time - b.time);
 
-    const closestPoint = seaLevel.reduce((prev, curr) => {
+let previousTide = null;
+let nextTide = null;
 
-        const prevDiff =
-            Math.abs(new Date(prev.time) - now);
+for (let i = 0; i < sortedTides.length; i++) {
 
-        const currDiff =
-            Math.abs(new Date(curr.time) - now);
-
-        return currDiff < prevDiff ? curr : prev;
-
-    });
-
-    const currentIndex =
-        seaLevel.indexOf(closestPoint);
-
-
-
-const currentHeight =
-    Number(closestPoint.sg) ;
-
-    let tideStatus = "🌊";
-
-    if (currentIndex > 0) {
-
-        const previousHeight =
-    Number(
-        seaLevel[currentIndex - 1].sg
-    ) ;
-
-        tideStatus =
-            currentHeight > previousHeight
-                ? "⬆ Rising Tide"
-                : "⬇ Falling Tide";
+    if (sortedTides[i].time > now) {
+        nextTide = sortedTides[i];
+        previousTide = sortedTides[i - 1];
+        break;
     }
+}
 
-    document.getElementById("tides").innerHTML =
+let currentHeight = 0;
+let tideStatus = "🌊";
+
+if (previousTide && nextTide) {
+
+    const totalTime =
+        nextTide.time - previousTide.time;
+
+    const elapsedTime =
+        now - previousTide.time;
+
+    const fraction =
+        elapsedTime / totalTime;
+
+    currentHeight =
+        Number(previousTide.Height) +
+        (
+            Number(nextTide.Height)
+            - Number(previousTide.Height)
+        ) * fraction;
+
+    tideStatus =
+    nextTide.EventType === "HighWater"
+        ? "⬆ Rising Tide"
+        : "⬇ Falling Tide";
+
+}
+    
+document.getElementById("tides").innerHTML =
         `
         Current: ${currentHeight.toFixed(1)}m<br>
         ${tideStatus}<br>
 
-       Next ${nextTide.EventType}: ${new Date(nextTide.DateTime).toLocaleTimeString(
+       Next ${upcomingTide.EventType}: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
     "en-GB",
     {
         hour: "2-digit",
         minute: "2-digit"
     }
-)} • ${Number(nextTide.Height).toFixed(1)}m
+)} • ${Number(upcomingTide.Height).toFixed(1)}m
 <br>
 
         Highs:
