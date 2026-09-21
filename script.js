@@ -108,6 +108,7 @@ async function loadTides() {
 
 
     const tides = data.tides;
+    console.log(tides);
    const now = new Date();
 
 const upcomingTide = tides.find(
