@@ -19,9 +19,9 @@ jobs:
       - run: pip install requests arrow
 
       - run: python update_tides.py
-  env:
-    STORMGLASS_API_KEY: ${{ secrets.STORMGLASS_API_KEY }}
-    ADMIRALTY_API_KEY: ${{ secrets.ADMIRALTY_API_KEY }}
+        env:
+           STORMGLASS_API_KEY: ${{ secrets.STORMGLASS_API_KEY }}
+           ADMIRALTY_API_KEY: ${{ secrets.ADMIRALTY_API_KEY }}
 
       - run: |
           git config user.name github-actions
