@@ -179,7 +179,7 @@ ${tideStatus}<br>
 
 Next ${
     upcomingTide.EventType
-        .replace("HighWater", "High Tide")
+        .replace("HighWater", "Banna")
         .replace("LowWater", "Low Tide")
 }: ${new Date(upcomingTide.DateTime).toLocaleTimeString(
     "en-GB",
